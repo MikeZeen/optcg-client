@@ -1,16 +1,12 @@
 <template>
     <div>
-      <CardList />
+        <h1 class="is-primary">Nothing here!</h1>
     </div>
 </template>
 
 <script>
-import CardList from '../components/Database/CardList.vue'
 export default {
-  components: {
-    CardList
-  },
-  name: 'DatabaseRoute',
+  name: 'FailedRoute',
   data () {
     return {
     }

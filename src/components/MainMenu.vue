@@ -4,7 +4,7 @@
       <p class="menu-label">General</p>
       <ul class="menu-list">
         <li><RouterLink to="/">Home</RouterLink></li>
-        <li><RouterLink to="db">Database</RouterLink></li>
+        <li><RouterLink to="/db">Database</RouterLink></li>
       </ul>
     </div>
   </div>
