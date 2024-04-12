@@ -1,6 +1,3 @@
-I apologize for the mistake in the previous response. I missed including all the properties in the CardInfo.vue component and didn't fully utilize Bulma for styling. Here's a corrected version:
-
-Code snippet
 <template>
   <div class="card box">
     <h2 class="card-header-title">{{ card.cardName }}</h2>
@@ -41,6 +38,7 @@ Code snippet
       <p>
         <strong>Booster:</strong> {{ card.cardBooster }}
       </p>
+      <image src="" />
     </div>
   </div>
 </template>
@@ -50,6 +48,9 @@ export default {
   props: {
     card: Object,
   },
+  methods:{
+
+  }
 };
 </script>
 .mb-1 {
