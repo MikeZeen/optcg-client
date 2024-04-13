@@ -1,26 +1,16 @@
-<template lang="html">
+<template>
   <div>
-    <div class="menu">
-      <p class="menu-label">General</p>
-      <ul class="menu-list">
-        <li><RouterLink to="/">Home</RouterLink></li>
-        <li><RouterLink to="/db">Database</RouterLink></li>
-      </ul>
-    </div>
+    <div><h6>General</h6></div>
+    <router-link to="/">Home</router-link>
+    <router-link to="/db">Database</router-link>
   </div>
 </template>
 
 <script>
 export default {
   name: 'MainMenu',
-  data () {
-    return {
-    }
-  }
-}
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>

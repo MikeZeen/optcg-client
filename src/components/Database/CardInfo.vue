@@ -1,44 +1,28 @@
 <template>
-  <div class="card box">
-    <h2 class="card-header-title">{{ card.cardName }}</h2>
-    <div class="card-content">
-      <p>
-        <strong>ID:</strong> {{ card.cardId }}
-      </p>
-      <p>
-        <strong>Category:</strong> {{ card.cardCategory }}
-      </p>
-      <p>
-        <strong>Color:</strong> {{ card.cardColor }}
-      </p>
-      <p>
-        <strong>Life:</strong> {{ card.cardLife }}
-      </p>
-      <p>
-        <strong>Cost:</strong> {{ card.cardCost }}
-      </p>
-      <p>
-        <strong>Power:</strong> {{ card.cardPower }}
-      </p>
-      <p>
-        <strong>Attribute:</strong> {{ card.cardAttribute }}
-      </p>
-      <p>
-        <strong>Blocker:</strong> {{ card.cardBlocker }}
-      </p>
-      <p>
-        <strong>Description:</strong> {{ card.cardDescription }}
-      </p>
-      <p>
-        <strong>Type:</strong> {{ card.cardType }}
-      </p>
-      <p>
-        <strong>Status:</strong> {{ card.cardStatus }}
-      </p>
-      <p>
-        <strong>Booster:</strong> {{ card.cardBooster }}
-      </p>
-      <img :src="imageUrl" @load="handleImageLoad" />
+  <div>
+    <div>
+      <h4>{{ card.cardName }}</h4>
+    </div>
+    <div>
+      <div>
+        <div>
+          <img :src="imageUrl" @load="handleImageLoad" />
+        </div>
+        <div>
+          <p><strong>ID:</strong> {{ card.cardId }}</p>
+          <p><strong>Category:</strong> {{ card.cardCategory }}</p>
+          <p><strong>Color:</strong> {{ card.cardColor }}</p>
+          <p><strong>Life:</strong> {{ card.cardLife }}</p>
+          <p><strong>Cost:</strong> {{ card.cardCost }}</p>
+          <p><strong>Power:</strong> {{ card.cardPower }}</p>
+          <p><strong>Attribute:</strong> {{ card.cardAttribute }}</p>
+          <p><strong>Blocker:</strong> {{ card.cardBlocker }}</p>
+          <p><strong>Description:</strong> {{ card.cardDescription }}</p>
+          <p><strong>Type:</strong> {{ card.cardType }}</p>
+          <p><strong>Status:</strong> {{ card.cardStatus }}</p>
+          <p><strong>Booster:</strong> {{ card.cardBooster }}</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -78,5 +62,4 @@ export default {
 </script>
 
 <style scoped>
-/* Your component styles */
 </style>

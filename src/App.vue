@@ -1,21 +1,25 @@
 <template lang="html">
   <div id="app">
-    <div class="columns is-flex">
-      <Navbar class="column is-2"/>
-      <router-view class="column is-10"/>
+    <div> <!-- Use Materialize row class -->
+      <MainMenu/> <!-- Use col s2 to span 2 columns and full-height to make it full height -->
+      <router-view/> <!-- Use col s10 to span 10 columns -->
     </div>
   </div>
 </template>
 
 <script>
-import Navbar from './components/MainMenu.vue'
+import MainMenu from './components/MainMenu.vue'
 export default {
   name: 'App',
   components: {
-    Navbar
+    MainMenu
   }
 }
 </script>
 
-<style>
+<style scoped>
+/* You can add scoped styles here if necessary */
+.full-height {
+  height: 100vh; /* Set height to 100% of viewport height */
+}
 </style>
