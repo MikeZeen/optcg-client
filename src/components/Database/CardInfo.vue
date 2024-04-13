@@ -38,7 +38,7 @@
       <p>
         <strong>Booster:</strong> {{ card.cardBooster }}
       </p>
-      <image src="" />
+      <img :src="imageUrl" @load="handleImageLoad" />
     </div>
   </div>
 </template>
@@ -48,13 +48,35 @@ export default {
   props: {
     card: Object,
   },
-  methods:{
+  data() {
+    return {
+      imageUrl: null,
+    };
+  },
+  methods: {
+    async getImage(cardId, cardImages) {
+      const parts = cardId.split('-');
+      const prefix = parts[0];
+      const imageFile = cardImages.split(", ")[0];
 
-  }
+      try {
+        const imageUrl = require(`@/assets/images/cards/${prefix}/${imageFile}.png`);
+        return imageUrl;
+      } catch (error) {
+        console.error("Error loading image:", error);
+        return null; 
+      }
+    },
+    handleImageLoad() {
+      this.$forceUpdate(); // Force re-render of the component
+    },
+  },
+  async mounted() {
+    this.imageUrl = await this.getImage(this.card.cardId, this.card.cardImages);
+  },
 };
 </script>
-.mb-1 {
-  margin-bottom: 1rem;
-}
+
 <style scoped>
+/* Your component styles */
 </style>

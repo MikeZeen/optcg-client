@@ -14,14 +14,9 @@ export default new Router({
       component: HomeRoute
     },
     {
-      path: '/db/:page&:perPage',
+      path: '/db',
       name: 'DatabaseRoute',
       component: DatabaseRoute
-    },
-    {
-      path: '*',
-      name: 'FailedRoute',
-      component: FailedRoute
     }
   ],
 })
