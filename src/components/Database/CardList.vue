@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
   <div>
     <div v-if="totalPages > 1">
       <button v-if="currentPage > 1" @click="prevPage">Previous</button>
@@ -6,68 +6,77 @@
       <button v-if="currentPage < totalPages" @click="nextPage">Next</button>
     </div>
 
-    <div v-for="card in cards" :key="card.cardId">
-      <CardInfo :card="card" />
-    </div>
+    <CardInfo v-for="card in cards" :key="card.cardId" :card="card" />
   </div>
 </template>
 
-<script>
-import CardInfo from "./CardInfo.vue";
+<script lang="ts">
+import { defineComponent, ref, watch } from 'vue';
+import CardInfo from './CardInfo.vue';
 
-export default {
+interface Card {
+  cardId: string;
+}
+
+export default defineComponent({
   components: {
     CardInfo,
   },
-  data() {
+  setup() {
+    const cards = ref<Card[]>([]);
+    const currentPage = ref(1);
+    const perPage = ref(10);
+    const totalPages = ref(1);
+
+    const fetchCards = async () => {
+    try {
+        const url = `https://localhost:7241/cards/page=${currentPage.value}&perPage=${perPage.value}`;
+        const response = await fetch(url);
+        if (!response.ok) {
+        throw new Error('Failed to fetch cards');
+        }
+        const data = await response.json();
+        if (!data) {
+        throw new Error('Empty response');
+        }
+        console.log(data);
+        cards.value = data.cards;
+        totalPages.value = Math.ceil(data.totalCards / perPage.value);
+    } catch (error) {
+        console.error(error);
+    }
+    };
+
+    const prevPage = () => {
+      if (currentPage.value > 1) {
+        currentPage.value--;
+      }
+    };
+
+    const nextPage = () => {
+      if (currentPage.value < totalPages.value) {
+        currentPage.value++;
+      }
+    };
+
+    watch(currentPage, fetchCards);
+    watch(perPage, fetchCards);
+
     return {
-      cards: [],
-      currentPage: 1,
-      perPage: 10,
-      totalPages: 1,
+      cards,
+      currentPage,
+      perPage,
+      totalPages,
+      fetchCards,
+      prevPage,
+      nextPage,
     };
   },
-  created() {
+  mounted() {
+    // Call fetchCards when the component is mounted
     this.fetchCards();
   },
-  watch: {
-    currentPage: {
-      handler() {
-        this.fetchCards();
-      },
-      immediate: true
-    },
-    perPage: {
-      handler() {
-        this.fetchCards();
-      },
-      immediate: true
-    }
-  },
-  methods: {
-    async fetchCards() {
-      try {
-        const url = `https://localhost:7241/cards/page=${this.currentPage}&perPage=${this.perPage}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        this.cards = data.cards;
-        this.totalPages = Math.ceil(data.totalCards / this.perPage);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    prevPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-      }
-    },
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
-      }
-    }
-  },
-};
+});
 </script>
 
 <style scoped>

@@ -27,39 +27,58 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
   props: {
-    card: Object,
+    card: Object as () => ({
+      cardName: String,
+      cardId: String,
+      cardCategory: String,
+      cardColor: String,
+      cardLife: String,
+      cardCost: String,
+      cardPower: String,
+      cardAttribute: String,
+      cardBlocker: String,
+      cardDescription: String,
+      cardType: String,
+      cardStatus: String,
+      cardBooster: String,
+      cardImages: String // assuming cardImages is a string
+    })
   },
   data() {
     return {
-      imageUrl: null,
+      imageUrl: null as string | null,
     };
   },
   methods: {
-    async getImage(cardId, cardImages) {
+    async getImage(cardId: string, cardImages: string) {
       const parts = cardId.split('-');
       const prefix = parts[0];
       const imageFile = cardImages.split(", ")[0];
 
       try {
-        const imageUrl = require(`@/assets/images/cards/${prefix}/${imageFile}.png`);
-        return imageUrl;
+        // Use import to dynamically load the image
+        const imageUrl = await import(`../../assets/images/cards/${prefix}/${imageFile}.png`);
+        return imageUrl.default;
       } catch (error) {
         console.error("Error loading image:", error);
-        return null; 
+        return null;
       }
     },
     handleImageLoad() {
-      this.$forceUpdate(); // Force re-render of the component
+      this.$forceUpdate();
     },
   },
   async mounted() {
     this.imageUrl = await this.getImage(this.card.cardId, this.card.cardImages);
   },
-};
+});
 </script>
+
 
 <style scoped>
 </style>
