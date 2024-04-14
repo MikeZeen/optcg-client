@@ -6,16 +6,33 @@
       <button v-if="currentPage < totalPages" @click="nextPage">Next</button>
     </div>
 
-    <CardInfo v-for="card in cards" :key="card.cardId" :card="card" />
+    <CardInfo
+      v-for="card in cards"
+      :key="card.cardId.toString()"
+      :card="card"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
-import CardInfo from './CardInfo.vue';
+import { defineComponent, ref, watch } from "vue";
+import CardInfo from "./CardInfo.vue";
 
 interface Card {
   cardId: string;
+  cardName: string;
+  cardCategory: string;
+  cardColor: string;
+  cardLife: string;
+  cardCost: string;
+  cardPower: string;
+  cardAttribute: string;
+  cardBlocker: string;
+  cardDescription: string;
+  cardType: string;
+  cardStatus: string;
+  cardBooster: string;
+  cardImages: string;
 }
 
 export default defineComponent({
@@ -29,22 +46,22 @@ export default defineComponent({
     const totalPages = ref(1);
 
     const fetchCards = async () => {
-    try {
+      try {
         const url = `https://localhost:7241/cards/page=${currentPage.value}&perPage=${perPage.value}`;
         const response = await fetch(url);
         if (!response.ok) {
-        throw new Error('Failed to fetch cards');
+          throw new Error("Failed to fetch cards");
         }
         const data = await response.json();
         if (!data) {
-        throw new Error('Empty response');
+          throw new Error("Empty response");
         }
         console.log(data);
         cards.value = data.cards;
         totalPages.value = Math.ceil(data.totalCards / perPage.value);
-    } catch (error) {
+      } catch (error) {
         console.error(error);
-    }
+      }
     };
 
     const prevPage = () => {
@@ -79,5 +96,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

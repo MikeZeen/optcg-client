@@ -1,18 +1,18 @@
 <template lang="html">
   <div>
-    <div><h6>General</h6></div>
-    <router-link to="/">Home</router-link>
-    <router-link to="/db">Database</router-link>
+    <ul class="menu-list">
+      <li class="menu-item"><router-link to="/">Home</router-link></li>
+      <li class="menu-item"><router-link to="/db">Database</router-link></li>
+    </ul>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'; // Import defineComponent from 'vue'
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: 'MainMenu',
+  name: "MainMenu",
 });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

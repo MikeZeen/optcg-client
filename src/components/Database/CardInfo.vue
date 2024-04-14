@@ -6,7 +6,7 @@
     <div>
       <div>
         <div>
-          <img :src="imageUrl" @load="handleImageLoad" />
+          <img :src="imageUrl!" @load="handleImageLoad" />
         </div>
         <div>
           <p><strong>ID:</strong> {{ card.cardId }}</p>
@@ -28,26 +28,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {
-    card: Object as () => ({
-      cardName: String,
-      cardId: String,
-      cardCategory: String,
-      cardColor: String,
-      cardLife: String,
-      cardCost: String,
-      cardPower: String,
-      cardAttribute: String,
-      cardBlocker: String,
-      cardDescription: String,
-      cardType: String,
-      cardStatus: String,
-      cardBooster: String,
-      cardImages: String // assuming cardImages is a string
-    })
+    card: {
+      type: Object as () => {
+        cardName: string;
+        cardId: string;
+        cardCategory: string;
+        cardColor: string;
+        cardLife: string;
+        cardCost: string;
+        cardPower: string;
+        cardAttribute: string;
+        cardBlocker: string;
+        cardDescription: string;
+        cardType: string;
+        cardStatus: string;
+        cardBooster: string;
+        cardImages: string;
+      },
+      required: true,
+    },
   },
   data() {
     return {
@@ -56,13 +59,15 @@ export default defineComponent({
   },
   methods: {
     async getImage(cardId: string, cardImages: string) {
-      const parts = cardId.split('-');
+      const parts = cardId.split("-");
       const prefix = parts[0];
       const imageFile = cardImages.split(", ")[0];
 
       try {
         // Use import to dynamically load the image
-        const imageUrl = await import(`../../assets/images/cards/${prefix}/${imageFile}.png`);
+        const imageUrl = await import(
+          `../../assets/images/cards/${prefix}/${imageFile}.png`
+        );
         return imageUrl.default;
       } catch (error) {
         console.error("Error loading image:", error);
@@ -79,6 +84,4 @@ export default defineComponent({
 });
 </script>
 
-
-<style scoped>
-</style>
+<style scoped></style>

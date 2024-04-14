@@ -1,0 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap");
+
+:root {
+  --dark-gray: #252525;
+  --darker-gray: #1f1f1f;
+  --main-color: #001a41;
+  --secondary-color: #9e9e9e;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: "Nunito Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "wdth" 100, "YTLC" 500;
+}
+
+#app {
+  margin: 0;
+  padding: 0;
+}
+
+#wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.main-menu {
+  width: 30vh;
+  background-color: var(--dark-gray);
+  padding-top: 1rem;
+}
+
+.content {
+  width: 70vh;
+  padding-top: 1rem;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+.menu-item {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  height: 36px;
+  border-bottom: solid 1px var(--darker-gray);
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-item a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  width: 100%;
+  height: 100%;
+}
+
+.menu-item a:hover {
+  background: var(--darker-gray);
+}
