@@ -5,12 +5,13 @@
       <span>Page {{ currentPage }} of {{ totalPages }}</span>
       <button v-if="currentPage < totalPages" @click="nextPage">Next</button>
     </div>
-
-    <CardInfo
+    <div id="cards-wrapper">
+      <CardInfo
       v-for="card in cards"
       :key="card.cardId.toString()"
       :card="card"
     />
+    </div>
   </div>
 </template>
 

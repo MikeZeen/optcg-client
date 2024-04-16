@@ -4,7 +4,7 @@
       <img :src="imageUrl!" @load="handleImageLoad" class="card-image"/>
       <div>
         <div class="card-info-row">
-          <h4>{{ card.cardName }}</h4>
+          <h2>{{ card.cardName }}</h2>
           <span class="card-color">{{ card.cardColor }}</span>
           <span class="card-category">{{ card.cardCategory }}</span>
           <span class="card-id">{{ card.cardId }}</span>
@@ -15,25 +15,35 @@
             {{ card.cardLife }}
             </span>
           <span class="card-cost" v-if="card.cardCost != 0">
-            <v-icon name="fa-dollar-sign" scale="1.2"/>
+            <v-icon name="gi-two-coins" scale="1.2"/>
             {{ card.cardCost }}
           </span>
-          <span class="card-power">
-            <v-icon name="gi-sword-spin" scale="1.2"/>
+          <span class="card-power" v-if="card.cardCategory != 'Event'">
+            <v-icon name="gi-pointy-sword" scale="1.2"/>
             {{ card.cardPower }}
           </span>
           <span class="card-blocker" v-if="card.cardBlocker != 0">
-            <v-icon name="bi-shield-fill" />
-            {{ card.cardBlocker }}
+            <v-icon name="bi-lightning-charge-fill" scale="1.2"/>
+            +{{ card.cardBlocker }}
           </span>
         </div>
-        
-        
-        <p class="card-attributes"><strong>Attribute:</strong> {{ card.cardAttribute }}</p>
-        
-        <p class="card-description"><strong>Description:</strong> {{ card.cardDescription }}</p>
-        <p class="card-types"><strong>Type:</strong> {{ card.cardType }}</p>
-        <p class="card-legality"><strong>Status:</strong> {{ card.cardStatus }}</p>
+        <div class="card-info-row" v-if="card.cardCategory != 'Event'">
+          <span class="card-attributes">
+            <strong>Attribute:</strong> {{ card.cardAttribute }}
+          </span>
+        </div>
+        <div class="card-info-row" v-if="card.cardDescription != ''">
+          <span class="card-description" ><strong>Description:</strong> <br />
+            {{ card.cardDescription }}
+          </span>
+        </div>
+        <div class="card-info-row">
+          <span class="card-types">
+            <strong>Type:</strong> {{ card.cardType.replace(", ", "/") }}</span>
+        </div>
+        <div class="card-info-row">
+            <span class="card-legality">{{ card.cardStatus }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -41,16 +51,16 @@
 
 <script lang="ts">
 import { addIcons } from 'oh-vue-icons';
-import { BiHeartFill, BiShieldFill } from "oh-vue-icons/icons";
+import { BiHeartFill, BiLightningChargeFill } from "oh-vue-icons/icons";
 import { FaDollarSign} from "oh-vue-icons/icons";
-import { GiSwordSpin} from "oh-vue-icons/icons";
+import { GiTwoCoins, GiPointySword} from "oh-vue-icons/icons";
 
 import { defineComponent } from "vue";
 
-addIcons(GiSwordSpin, 
-          FaDollarSign, 
+addIcons( GiPointySword, 
+          GiTwoCoins, 
           BiHeartFill, 
-          BiShieldFill)
+          BiLightningChargeFill)
 
 export default defineComponent({
   props: {

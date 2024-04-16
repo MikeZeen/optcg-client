@@ -97,10 +97,6 @@ DATABASE STYLING
   justify-content: space-between;
 }
 
-.card-wrapper{
-  width: 100%;
-}
-
 .card-details{
   display: flex;
   flex-direction: row;
@@ -112,12 +108,30 @@ DATABASE STYLING
 
 .card-info-row{
   display: flex;
+  align-items: flex-end;
+  margin-top: 10px;
+}
+
+.card-info-row:first-child {
+  margin-top: none;
+  margin-bottom: 40px;
 }
 
 .card-info-row span{
-  margin-top: auto;
-  margin-bottom: auto;
   padding-left: 5px;
   padding-right: 5px;
+  max-width: 400px;
+}
+
+.card-info-row h2{
+  text-decoration: underline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+#cards-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
 }
 
