@@ -1,6 +1,6 @@
 <template lang="html">
-  <div>
-    <div v-if="totalPages > 1">
+  <div class="cards">
+    <div class="pagination" v-if="totalPages > 1">
       <button v-if="currentPage > 1" @click="prevPage">Previous</button>
       <span>Page {{ currentPage }} of {{ totalPages }}</span>
       <button v-if="currentPage < totalPages" @click="nextPage">Next</button>
