@@ -1,11 +1,11 @@
 <template lang="html">
   <div class="database-wrapper">
     <div class="pagination" v-if="totalPages > 1">
-      <button v-if="currentPage > 1" @click="prevPage">Previous</button>
+      <button :disabled="currentPage <= 1" @click="prevPage">Previous</button>
       <span>Page {{ currentPage }} of {{ totalPages }}</span>
-      <button v-if="currentPage < totalPages" @click="nextPage">Next</button>
+      <button :disabled="currentPage >= totalPages" @click="nextPage">Next</button>
       <label for="results-per-page">Results per page:</label>
-      <select id="results-per-page" v-model="perPage" @change="changeResultsPerPage">
+      <select v-model="perPage" @change="changeResultsPerPage">
         <option value="10">10</option>
         <option value="25">25</option>
         <option value="50">50</option>
@@ -108,4 +108,5 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

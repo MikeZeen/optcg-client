@@ -103,6 +103,17 @@ DATABASE STYLING
   align-items: center;
   padding: 1rem;
 }
+
+.pagination select {
+  background: rgb(0, 11, 58);
+  color: white;
+  border: none;
+  padding: 1rem;
+  margin: 0.5rem;
+  border-radius: 5px;
+  height: 3rem;
+}
+
 .pagination button{
   background: rgb(0, 11, 58);
   color: white;
@@ -117,6 +128,16 @@ DATABASE STYLING
   background: rgb(22, 22, 22);
   cursor: pointer;
 }
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.pagination button:disabled:hover {
+  background: rgb(0, 11, 58);
+}
+
 
 
 
