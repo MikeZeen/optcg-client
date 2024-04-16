@@ -1,11 +1,11 @@
 <template lang="html">
-  <div class="cards">
+  <div class="database-wrapper">
     <div class="pagination" v-if="totalPages > 1">
       <button v-if="currentPage > 1" @click="prevPage">Previous</button>
       <span>Page {{ currentPage }} of {{ totalPages }}</span>
       <button v-if="currentPage < totalPages" @click="nextPage">Next</button>
     </div>
-    <div id="cards-wrapper">
+    <div class="cards">
       <CardInfo
       v-for="card in cards"
       :key="card.cardId.toString()"

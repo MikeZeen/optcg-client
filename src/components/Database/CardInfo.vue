@@ -4,10 +4,12 @@
       <img :src="imageUrl!" @load="handleImageLoad" class="card-image"/>
       <div>
         <div class="card-info-row">
-          <h2>{{ card.cardName }}</h2>
+          <h2>{{ card.cardName }}<span> </span></h2>
+          <h2 style="text-decoration: none;">{{ card.cardId }}</h2>
+        </div>
+        <div class="card-info-row">
           <span class="card-color">{{ card.cardColor }}</span>
           <span class="card-category">{{ card.cardCategory }}</span>
-          <span class="card-id">{{ card.cardId }}</span>
         </div>
         <div class="card-info-row">
           <span class="card-life" v-if="card.cardLife != 0">
@@ -34,7 +36,7 @@
         </div>
         <div class="card-info-row" v-if="card.cardDescription != ''">
           <span class="card-description" ><strong>Description:</strong> <br />
-            {{ card.cardDescription }}
+          <div v-html="highlightedDescription"></div>
           </span>
         </div>
         <div class="card-info-row">
@@ -42,7 +44,7 @@
             <strong>Type:</strong> {{ card.cardType.replace(", ", "/") }}</span>
         </div>
         <div class="card-info-row">
-            <span class="card-legality">{{ card.cardStatus }}</span>
+            <span class="card-legality">{{ card.cardStatus.toLowerCase() }}</span>
         </div>
       </div>
     </div>
@@ -52,7 +54,6 @@
 <script lang="ts">
 import { addIcons } from 'oh-vue-icons';
 import { BiHeartFill, BiLightningChargeFill } from "oh-vue-icons/icons";
-import { FaDollarSign} from "oh-vue-icons/icons";
 import { GiTwoCoins, GiPointySword} from "oh-vue-icons/icons";
 
 import { defineComponent } from "vue";
@@ -87,7 +88,64 @@ export default defineComponent({
   data() {
     return {
       imageUrl: null as string | null,
+      //*Blue *//
+      effects: ["\\[On Play\\]", "\\[Activate: Main\\]", 
+                "\\[On K.O.\\]", "\\[Your Turn\\]", 
+                "\\[Opponent's Turn\\]", "\\[When Attacking\\]",
+                "\\[Main\\]", "\\[On Block\\]", "\\[End of your Turn\\]",
+                "\\[End of Opponent's Turn\\]", "\\[On Your Opponent's Attack\\]"],
+
+      //*Orange *//
+      keywords: ["\\[Blocker\\]", "\\[Rush\\]", "\\[Double Attack\\]", "\\[Banish\\]"],
+
+      //*Yellow *//
+      trigger : ["\\[Trigger\\]"],
+
+      //*Pink *//
+      restriction : ["\\[Once Per Turn\\]"],
+
+      //*Black *//
+      donNumber : 0,
+      donX : [`\\[DON!!x${this.donNumber}\\]`],
+      donMinus : [`\\[DON!!-${this.donNumber}\\]`]
+
     };
+  },
+  computed: {
+    formattedDescription(){
+      return this.card.cardDescription;
+    },
+    highlightedDescription() {
+      let description = this.formattedDescription;
+      [...this.effects, ...this.keywords, ...this.trigger, ...this.restriction].map(effect => {
+        const regex = new RegExp(`(${effect})([^\\[]*)`, 'g');
+        description = description.replace(regex, (match, p1, p2, offset, string) => {
+          const effectWithoutBrackets = p1.replace(/\\?\[/g, '').replace(/\\?\]/g, '');
+          let className;
+          if (this.effects.includes(effect)) {
+            className = 'bg-blue keyword';
+          } else if (this.keywords.includes(effect)) {
+            className = 'bg-orange keyword';
+          } else if (this.trigger.includes(effect)) {
+            className = 'bg-yellow keyword';
+          } else if (this.restriction.includes(effect)) {
+            className = 'bg-pink keyword';
+          }
+          return `<strong class="${className}">${effectWithoutBrackets}</strong>${p2}`;
+        });
+      });
+
+      if (/\[DON!! x\d+\]|DON!! −\d+/.test(description)) {
+        const donRegex = /\[DON!! x\d+\]|DON!! −\d+/g;
+        description = description.replace(donRegex, (match) => {
+          // Remove brackets from the matched string
+          const matchWithoutBrackets = match.replace(/[\[\]]/g, '');
+          return `<strong class="bg-black keyword">${matchWithoutBrackets}</strong>`;
+        });
+      }
+
+      return description;
+    }
   },
   methods: {
     async getImage(cardId: string, cardImages: string) {

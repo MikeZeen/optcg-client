@@ -32,12 +32,10 @@ body {
   display: flex;
   flex-direction: row;
   min-height: 100%;
-  min-width: 100%;
 }
 
 .content {
   width: 100%;
-  padding: 1rem;
 }
 
 /**
@@ -88,18 +86,51 @@ ul {
 DATABASE STYLING
 **/
 
-.cards{
+.database-wrapper{
   width: 100%;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 1rem;
+}
+
+@media screen and (max-width: 600px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
 }
 
 .pagination{
   display:flex;
-  justify-content: space-between;
+  height: 4rem;
+  align-items: center;
+  padding: 1rem;
 }
+.pagination button{
+  background: var(--darker-main-color);
+  color: white;
+  border: none;
+  padding: 1rem;
+  margin: 0.5rem;
+  border-radius: 5px;
+  height: 3rem;
+}
+
+.pagination button:hover{
+  background: var(--main-color);
+  cursor: pointer;
+}
+
+
 
 .card-details{
   display: flex;
   flex-direction: row;
+  background: rgb(22, 22, 22);
+  border-radius: 20px;
 }
 
 .card-image{
@@ -110,17 +141,18 @@ DATABASE STYLING
   display: flex;
   align-items: flex-end;
   margin-top: 10px;
+  padding-left: 10px;
 }
 
 .card-info-row:first-child {
   margin-top: none;
-  margin-bottom: 40px;
 }
 
 .card-info-row span{
   padding-left: 5px;
   padding-right: 5px;
-  max-width: 400px;
+  max-width: 440px;
+  /*min-width: 440px;*/
 }
 
 .card-info-row h2{
@@ -129,9 +161,41 @@ DATABASE STYLING
   margin-bottom: 0;
 }
 
-#cards-wrapper {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+.card-legality{
+  text-transform: capitalize;
 }
 
+.keyword{
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 8px;
+}
+
+.bg-blue{
+  background: #308db9;
+  color: white;
+}
+
+
+.bg-orange{
+  background: #fd9f47;
+  color: white;
+}
+
+.bg-pink{
+  background: #ffaccf;
+  color: black;
+}
+
+.bg-yellow{
+  background: #f8e473;
+  color: black;
+}
+
+.bg-black{
+  background: black;
+  color: white;
+  border: white solid 2px;
+}
