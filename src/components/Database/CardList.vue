@@ -4,6 +4,13 @@
       <button v-if="currentPage > 1" @click="prevPage">Previous</button>
       <span>Page {{ currentPage }} of {{ totalPages }}</span>
       <button v-if="currentPage < totalPages" @click="nextPage">Next</button>
+      <label for="results-per-page">Results per page:</label>
+      <select id="results-per-page" v-model="perPage" @change="changeResultsPerPage">
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
     </div>
     <div class="cards">
       <CardInfo
@@ -16,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from "vue";
+import { defineComponent, ref, watch, onMounted } from "vue";
 import CardInfo from "./CardInfo.vue";
 
 interface Card {
@@ -65,6 +72,11 @@ export default defineComponent({
       }
     };
 
+    const changeResultsPerPage = () => {
+      currentPage.value = 1;
+      fetchCards();
+    };
+
     const prevPage = () => {
       if (currentPage.value > 1) {
         currentPage.value--;
@@ -80,6 +92,8 @@ export default defineComponent({
     watch(currentPage, fetchCards);
     watch(perPage, fetchCards);
 
+    onMounted(fetchCards);
+
     return {
       cards,
       currentPage,
@@ -88,11 +102,8 @@ export default defineComponent({
       fetchCards,
       prevPage,
       nextPage,
+      changeResultsPerPage,
     };
-  },
-  mounted() {
-    // Call fetchCards when the component is mounted
-    this.fetchCards();
   },
 });
 </script>
