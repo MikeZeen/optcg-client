@@ -1,11 +1,15 @@
 <template lang="html">
   <div class="database-wrapper">
     <div class="pagination" v-if="totalPages > 1">
-      <button :disabled="currentPage <= 1" @click="prevPage">Previous</button>
-      <span>Page {{ currentPage }} of {{ totalPages }}</span>
-      <button :disabled="currentPage >= totalPages" @click="nextPage">Next</button>
-      <label for="results-per-page">Results per page:</label>
-      <select v-model="perPage" @change="changeResultsPerPage">
+      <div class="pagination-buttons">
+        <button :disabled="currentPage <= 1" @click="prevPage">Previous</button>
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+        <button :disabled="currentPage >= totalPages" @click="nextPage">
+          Next
+        </button>
+      </div>
+      <SearchBar @updateSearch="handleSearchUpdate" />
+      <select v-model="perPage" @change="changeResultsPerPage" class="results">
         <option value="10">10</option>
         <option value="25">25</option>
         <option value="50">50</option>
@@ -14,10 +18,10 @@
     </div>
     <div class="cards">
       <CardInfo
-      v-for="card in cards"
-      :key="card.cardId.toString()"
-      :card="card"
-    />
+        v-for="card in cards"
+        :key="card.cardId.toString()"
+        :card="card"
+      />
     </div>
   </div>
 </template>
@@ -25,6 +29,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch, onMounted } from "vue";
 import CardInfo from "./CardInfo.vue";
+import SearchBar from "./Searchbar.vue";
 
 interface Card {
   cardId: string;
@@ -46,16 +51,18 @@ interface Card {
 export default defineComponent({
   components: {
     CardInfo,
+    SearchBar
   },
   setup() {
+    const allCards = ref<Card[]>([]);
     const cards = ref<Card[]>([]);
     const currentPage = ref(1);
     const perPage = ref(10);
     const totalPages = ref(1);
 
-    const fetchCards = async () => {
+    const fetchAllCards = async () => {
       try {
-        const url = `https://localhost:7241/cards/page=${currentPage.value}&perPage=${perPage.value}`;
+        const url = `https://localhost:7241/cards`;
         const response = await fetch(url);
         if (!response.ok) {
           throw new Error("Failed to fetch cards");
@@ -64,42 +71,83 @@ export default defineComponent({
         if (!data) {
           throw new Error("Empty response");
         }
-        console.log(data);
-        cards.value = data.cards;
-        totalPages.value = Math.ceil(data.totalCards / perPage.value);
+        allCards.value = data.cards;
+        totalPages.value = Math.ceil(allCards.value.length / perPage.value);
+        paginateCards();
       } catch (error) {
         console.error(error);
       }
     };
 
-    const changeResultsPerPage = () => {
-      currentPage.value = 1;
-      fetchCards();
+    const paginateCards = () => {
+      const startIndex = (currentPage.value - 1) * perPage.value;
+      const endIndex = startIndex + perPage.value;
+      cards.value = allCards.value.slice(startIndex, endIndex);
+    };
+
+    const searchNameCards = async (searchTerm: string) => {
+      try {
+        const url = `https://localhost:7241/cards/search?CardName=${searchTerm}`;
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Failed to search cards");
+        }
+        const data = await response.json();
+        if (!response) {
+          throw new Error("Empty response");
+        }
+        allCards.value = data.cards;
+        totalPages.value = Math.ceil(allCards.value.length / perPage.value);
+        paginateCards();
+      } catch (error) {
+        console.error('searchNameCards error:', error);
+      }
+    };
+
+    const handleSearchUpdate = (searchTerm: string) => {
+      searchNameCards(searchTerm)
+        .then(response => console.log('searchNameCards response:', response))
+        .catch(error => console.error('searchNameCards error:', error));
     };
 
     const prevPage = () => {
       if (currentPage.value > 1) {
         currentPage.value--;
+        paginateCards();
       }
     };
 
     const nextPage = () => {
       if (currentPage.value < totalPages.value) {
         currentPage.value++;
+        paginateCards();
       }
     };
 
-    watch(currentPage, fetchCards);
-    watch(perPage, fetchCards);
+    const changeResultsPerPage = () => {
+      totalPages.value = Math.ceil(allCards.value.length / perPage.value);
+      paginateCards();
+    };
 
-    onMounted(fetchCards);
+    onMounted(fetchAllCards);
+
+    watch(currentPage, () => {
+      paginateCards();
+    });
+
+    watch(perPage, () => {
+      changeResultsPerPage();
+    });
 
     return {
+      allCards,
       cards,
       currentPage,
       perPage,
       totalPages,
-      fetchCards,
+      fetchAllCards,
+      searchNameCards,
+      handleSearchUpdate,
       prevPage,
       nextPage,
       changeResultsPerPage,
@@ -107,6 +155,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-</style>

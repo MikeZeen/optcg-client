@@ -3,29 +3,29 @@
     <div class="card-details">
       <img :src="imageUrl!" @load="handleImageLoad" class="card-image"/>
       <div>
-        <div class="card-info-row">
-          <h2>{{ card.cardName }}<span> </span></h2>
+        <div class="card-info-header">
+          <h2>{{ card.cardName }}<span>  </span></h2>
           <h2 style="text-decoration: none;">{{ card.cardId }}</h2>
         </div>
-        <div class="card-info-row">
+        <div class="card-info-subtitle">
           <span class="card-color">{{ card.cardColor }}</span>
           <span class="card-category">{{ card.cardCategory }}</span>
         </div>
         <div class="card-info-row">
           <span class="card-life" v-if="card.cardLife != 0">
-            <v-icon name="bi-heart-fill" scale="1.2" />
+            <v-icon name="bi-heart-fill" class="icon" scale="1.2" />
             {{ card.cardLife }}
             </span>
           <span class="card-cost" v-if="card.cardCost != 0">
-            <v-icon name="gi-two-coins" scale="1.2"/>
+            <v-icon name="gi-two-coins" class="icon" scale="1.2"/>
             {{ card.cardCost }}
           </span>
           <span class="card-power" v-if="card.cardCategory != 'Event'">
-            <v-icon name="gi-pointy-sword" scale="1.2"/>
+            <v-icon name="gi-pointy-sword" class="icon" scale="1.2"/>
             {{ card.cardPower }}
           </span>
           <span class="card-blocker" v-if="card.cardBlocker != 0">
-            <v-icon name="bi-lightning-charge-fill" scale="1.2"/>
+            <v-icon name="bi-lightning-charge-fill" class="icon" scale="1.2"/>
             +{{ card.cardBlocker }}
           </span>
         </div>
@@ -88,26 +88,18 @@ export default defineComponent({
   data() {
     return {
       imageUrl: null as string | null,
-      //*Blue *//
       effects: ["\\[On Play\\]", "\\[Activate: Main\\]", 
                 "\\[On K.O.\\]", "\\[Your Turn\\]", 
                 "\\[Opponent's Turn\\]", "\\[When Attacking\\]",
                 "\\[Main\\]", "\\[On Block\\]", "\\[End of your Turn\\]",
                 "\\[End of Opponent's Turn\\]", "\\[On Your Opponent's Attack\\]"],
-
-      //*Orange *//
       keywords: ["\\[Blocker\\]", "\\[Rush\\]", "\\[Double Attack\\]", "\\[Banish\\]"],
-
-      //*Yellow *//
       trigger : ["\\[Trigger\\]"],
-
-      //*Pink *//
       restriction : ["\\[Once Per Turn\\]"],
-
-      //*Black *//
       donNumber : 0,
       donX : [`\\[DON!!x${this.donNumber}\\]`],
-      donMinus : [`\\[DON!!-${this.donNumber}\\]`]
+      donMinus : [`\\[DON!!-${this.donNumber}\\]`],
+      counter: ["\\[Counter\\]"],
 
     };
   },
@@ -117,7 +109,7 @@ export default defineComponent({
     },
     highlightedDescription() {
       let description = this.formattedDescription;
-      [...this.effects, ...this.keywords, ...this.trigger, ...this.restriction].map(effect => {
+      [...this.effects, ...this.keywords, ...this.trigger, ...this.restriction, ...this.counter].map(effect => {
         const regex = new RegExp(`(${effect})([^\\[]*)`, 'g');
         description = description.replace(regex, (match, p1, p2, offset, string) => {
           const effectWithoutBrackets = p1.replace(/\\?\[/g, '').replace(/\\?\]/g, '');
@@ -130,6 +122,9 @@ export default defineComponent({
             className = 'bg-yellow keyword';
           } else if (this.restriction.includes(effect)) {
             className = 'bg-pink keyword';
+          }
+          else if(this.counter.includes(effect)){
+            className='bg-red keyword'
           }
           return `<strong class="${className}">${effectWithoutBrackets}</strong>${p2}`;
         });

@@ -1,8 +1,9 @@
 <template lang="html">
   <div>
     <ul class="menu-list">
-      <li class="menu-item"><router-link to="/">Home</router-link></li>
-      <li class="menu-item"><router-link to="/db">Database</router-link></li>
+      <img src="/Logo.png" class="logo"/>
+      <router-link to="/" tag="li" class="menu-item"><a>Home</a></router-link>
+      <router-link to="/db" tag="li" class="menu-item"><a>Database</a></router-link>
     </ul>
   </div>
 </template>
@@ -15,4 +16,9 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.logo{
+  width: 80%;
+  margin: auto;
+}
+</style>
