@@ -16,9 +16,13 @@
         <option value="100">100</option>
       </select>
     </div>
-    <div class="cards">
+    <div :class="['cards-failed', { 'cards': !fetchFailed }]">
+      <div class="failed" v-if="fetchFailed">
+        <h1>Failed to find any cards!</h1>
+      </div>
       <CardInfo
         v-for="card in cards"
+        v-if="!fetchFailed"
         :key="card.cardId.toString()"
         :card="card"
       />
@@ -54,6 +58,7 @@ export default defineComponent({
     SearchBar
   },
   setup() {
+    const fetchFailed = ref(false);
     const allCards = ref<Card[]>([]);
     const cards = ref<Card[]>([]);
     const currentPage = ref(1);
@@ -62,6 +67,7 @@ export default defineComponent({
 
     const fetchAllCards = async () => {
       try {
+        fetchFailed.value = false;
         const url = `https://localhost:7241/cards`;
         const response = await fetch(url);
         if (!response.ok) {
@@ -76,6 +82,7 @@ export default defineComponent({
         paginateCards();
       } catch (error) {
         console.error(error);
+        fetchFailed.value = true;
       }
     };
 
@@ -87,6 +94,7 @@ export default defineComponent({
 
     const searchNameCards = async (searchTerm: string) => {
       try {
+        fetchFailed.value = false;
         const url = `https://localhost:7241/cards/search?CardName=${searchTerm}`;
         const response = await fetch(url);
         if (!response.ok) {
@@ -101,6 +109,7 @@ export default defineComponent({
         paginateCards();
       } catch (error) {
         console.error('searchNameCards error:', error);
+        fetchFailed.value = true;
       }
     };
 
@@ -140,6 +149,7 @@ export default defineComponent({
     });
 
     return {
+      fetchFailed,
       allCards,
       cards,
       currentPage,
