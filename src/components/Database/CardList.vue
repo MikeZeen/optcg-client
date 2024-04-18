@@ -33,7 +33,7 @@
 import { defineComponent, ref, watch, onMounted } from "vue";
 import CardInfo from "./CardInfo.vue";
 import {config} from "@/config";
-import SearchBar from "./SearchBar.vue";
+import Temp from "./Temp.vue";
 
 interface Card {
   cardId: string;
