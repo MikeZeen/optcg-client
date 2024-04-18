@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="database-wrapper">
-    <div class="pagination" v-if="totalPages > 1">
+    <div class="pagination" v-if="totalPages >= 1">
       <div class="pagination-buttons">
         <button :disabled="currentPage <= 1" @click="prevPage">Previous</button>
         <span>Page {{ currentPage }} of {{ totalPages }}</span>
