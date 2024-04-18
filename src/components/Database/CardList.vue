@@ -8,13 +8,19 @@
           Next
         </button>
       </div>
-      <CardSearch @updateSearch="handleSearchUpdate" />
+      <div class="searchbar-wrapper">
+        <CardSearch @updateSearch="handleSearchUpdate" />
+        <v-icon name="gi-hamburger-menu" class="icon-big" scale="2" />
+      </div>
       <select v-model="perPage" @change="changeResultsPerPage" class="results">
         <option value="10">10</option>
         <option value="25">25</option>
         <option value="50">50</option>
         <option value="100">100</option>
       </select>
+    </div>
+    <div class="adv-search">
+
     </div>
     <div :class="['cards-failed', { 'cards': !fetchFailed}]">
       <div class="failed" v-if="fetchFailed">
@@ -34,6 +40,9 @@ import { defineComponent, ref, watch, onMounted } from "vue";
 import CardInfo from "./CardInfo.vue";
 import {config} from "@/config";
 import CardSearch from "./CardSearch.vue";
+import { GiHamburgerMenu} from "oh-vue-icons/icons";
+import { addIcons } from 'oh-vue-icons';
+
 
 interface Card {
   cardId: string;
@@ -51,6 +60,8 @@ interface Card {
   cardBooster: string;
   cardImages: string;
 }
+
+addIcons(GiHamburgerMenu);
 
 export default defineComponent({
   components: {

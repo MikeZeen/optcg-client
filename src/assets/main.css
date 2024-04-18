@@ -153,11 +153,27 @@ ul {
 }
 
 .searchbar{
-  width: 600px;
-  min-width: 600px;
+  width: 500px;
+  min-width: 500px;
   height: 3rem;
   border-radius: 10px;
   text-align: center;
+}
+
+.searchbar-wrapper{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.icon-big{
+  transition: all 0.13s ease-in-out;
+  margin-left: 10px;
+}
+
+.icon-big:hover{
+  transform: scale(1.1);
+  cursor: pointer;
 }
 
 .pagination button{
