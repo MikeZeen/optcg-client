@@ -8,7 +8,7 @@
           Next
         </button>
       </div>
-      <SearchBar @updateSearch="handleSearchUpdate" />
+      <CardSearch @updateSearch="handleSearchUpdate" />
       <select v-model="perPage" @change="changeResultsPerPage" class="results">
         <option value="10">10</option>
         <option value="25">25</option>
@@ -32,8 +32,8 @@
 <script lang="ts">
 import { defineComponent, ref, watch, onMounted } from "vue";
 import CardInfo from "./CardInfo.vue";
-import SearchBar from "./Searchbar.vue";
 import {config} from "@/config";
+import CardSearch from "./CardSearch.vue";
 
 interface Card {
   cardId: string;
@@ -55,7 +55,7 @@ interface Card {
 export default defineComponent({
   components: {
     CardInfo,
-    SearchBar
+    CardSearch
   },
   setup() {
     const fetchFailed = ref(false);
