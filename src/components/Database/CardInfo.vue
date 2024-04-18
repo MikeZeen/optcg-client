@@ -12,29 +12,29 @@
           <span class="card-category">{{ card.cardCategory }}</span>
         </div>
         <div class="card-info-row">
-          <span class="card-life" v-if="card.cardLife != 0">
+          <span class="card-life" v-if="card.cardLife !== '0'">
             <v-icon name="bi-heart-fill" class="icon" scale="1.2" />
             {{ card.cardLife }}
             </span>
-          <span class="card-cost" v-if="card.cardCost != 0">
+          <span class="card-cost" v-if="card.cardCost !== '0'">
             <v-icon name="gi-two-coins" class="icon" scale="1.2"/>
             {{ card.cardCost }}
           </span>
-          <span class="card-power" v-if="card.cardCategory != 'Event'">
+          <span class="card-power" v-if="card.cardCategory !== 'Event'">
             <v-icon name="gi-pointy-sword" class="icon" scale="1.2"/>
             {{ card.cardPower }}
           </span>
-          <span class="card-blocker" v-if="card.cardBlocker != 0">
+          <span class="card-blocker" v-if="card.cardBlocker !== '0'">
             <v-icon name="bi-lightning-charge-fill" class="icon" scale="1.2"/>
             +{{ card.cardBlocker }}
           </span>
         </div>
-        <div class="card-info-row" v-if="card.cardCategory != 'Event'">
+        <div class="card-info-row" v-if="card.cardCategory !== 'Event'">
           <span class="card-attributes">
             <strong>Attribute:</strong> {{ card.cardAttribute }}
           </span>
         </div>
-        <div class="card-info-row" v-if="card.cardDescription != ''">
+        <div class="card-info-row" v-if="card.cardDescription !== ''">
           <span class="card-description" ><strong>Description:</strong> <br />
           <div v-html="highlightedDescription"></div>
           </span>
@@ -109,7 +109,8 @@ export default defineComponent({
     },
     highlightedDescription() {
       let description = this.formattedDescription;
-      [...this.effects, ...this.keywords, ...this.trigger, ...this.restriction, ...this.counter].map(effect => {
+      [...this.effects, ...this.keywords, ...this
+      .trigger, ...this.restriction, ...this.counter].map(effect => {
         const regex = new RegExp(`(${effect})([^\\[]*)`, 'g');
         description = description.replace(regex, (match, p1, p2, offset, string) => {
           const effectWithoutBrackets = p1.replace(/\\?\[/g, '').replace(/\\?\]/g, '');
