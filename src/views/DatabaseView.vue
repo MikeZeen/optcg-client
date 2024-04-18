@@ -1,28 +1,22 @@
 <template lang="html">
-    <div>
-        <h1> Test </h1>
-      <CardList />
-    </div>
+  <div>
+    <CardList />
+  </div>
 </template>
 
 <script lang="ts">
-
-import { defineComponent } from 'vue'
-import CardList from '../components/Database/CardList.vue'
+import { defineComponent } from "vue";
+import CardList from "../components/Database/CardList.vue";
 
 export default defineComponent({
   components: {
-    CardList
+    CardList,
   },
-  name: 'DatabaseView',
-  data () {
-    return {
-    }
-  }
-})
-
+  name: "DatabaseView",
+  data() {
+    return {};
+  },
+});
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

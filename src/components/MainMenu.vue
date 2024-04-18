@@ -1,18 +1,24 @@
 <template lang="html">
   <div>
-    <div><h6>General</h6></div>
-    <router-link to="/">Home</router-link>
-    <router-link to="/db">Database</router-link>
+    <ul class="menu-list">
+      <img src="/Logo.png" class="logo"/>
+      <router-link to="/" tag="li" class="menu-item"><a>Home</a></router-link>
+      <router-link to="/db" tag="li" class="menu-item"><a>Database</a></router-link>
+    </ul>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'; // Import defineComponent from 'vue'
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: 'MainMenu',
+  name: "MainMenu",
 });
 </script>
 
 <style scoped>
+.logo{
+  width: 80%;
+  margin: auto;
+}
 </style>

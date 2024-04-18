@@ -1,0 +1,284 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap");
+
+:root {
+  --main-color: #012153; /* black */
+  --secondary-color: #010B29; /* rgb(0, 11, 58) */
+  --hover-color: #000000; /* black */
+  --active-link-color: #000000; /* black */
+  --button-hover: #161616; /* rgb(22, 22, 22) */
+  --disabled-button: #000B3A; /* rgb(0, 11, 58) */
+  --bg-blue: #308db9;
+  --bg-orange: #fd9f47;
+  --bg-pink: #ffaccf;
+  --bg-yellow: #f8e473;
+  --bg-red: #a71212;
+  --bg-black: #000000;
+  --header-color: #B1933B;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: "Nunito Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "wdth" 100, "YTLC" 500;
+  background: var(--main-color);
+  color: white;
+}
+
+#app {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+#wrapper {
+  display: flex;
+  flex-direction: row;
+  min-height: 100%;
+}
+
+.failed{
+  margin: auto;
+}
+
+.cards-failed{
+  display: block;
+  text-align: center;
+}
+
+.content {
+  width: calc(100% - 30vh); /* subtract the width of the menu */
+  margin-left: calc(30vh + 2rem); /* add left margin equal to the width of the menu */
+}
+
+.main-menu {
+  position: fixed;
+  width: 30vh;
+  min-width: 200px;
+  min-height: calc(100vh - 1rem);
+  background-color: var(--secondary-color);
+  padding-top: 1rem;
+  padding-left: 2rem;
+  border-right: rgb(5, 5, 5) 1px solid;
+  box-shadow: 0 0 10px black;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+.menu-item {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  height: 48px;
+  border-radius: 15px 0 0 15px;
+  margin-top: 5px;
+}
+
+.menu-item:hover{
+  background: var(--main-color);
+}
+
+.router-link-active {
+  background: var(--main-color);
+}
+
+.menu-item a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  width: 100%;
+  height: 100%;
+}
+
+.menu-item a:hover{
+  text-decoration: none;
+}
+
+.database-wrapper{
+  width: 100%;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 1rem;
+  text-align: left;
+}
+
+@media screen and (max-width: 600px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+.icon{
+  color: var(--header-color)
+}
+
+.pagination{
+  display:flex;
+  justify-content: space-between;
+  height: 4rem;
+  align-items: center;
+  padding: 1rem;
+  background: var(--secondary-color);
+}
+
+.pagination-buttons{
+  width: 300px;
+  min-width: 300px;
+}
+
+.pagination select {
+  background: var(--header-color);
+  color: white;
+  border: none;
+  padding: 1rem;
+  margin: 0.5rem;
+  border-radius: 5px;
+  height: 3rem;
+  width: 300px;
+  text-align: center;
+}
+
+.searchbar{
+  width: 600px;
+  min-width: 600px;
+  height: 3rem;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.pagination button{
+  color: white;
+  background-color: var(--header-color);
+  border: none;
+  padding: 1rem;
+  margin: 0.5rem;
+  border-radius: 5px;
+  height: 3rem;
+}
+
+.pagination button:hover{
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.pagination button:disabled:hover {
+  opacity: 0.4;
+}
+
+.card-details{
+  display: flex;
+  flex-direction: row;
+  background: var(--secondary-color);
+  border-radius: 20px;
+}
+
+.card-image{
+  max-height: 450px;
+}
+
+.card-info-row{
+  display: flex;
+  align-items: flex-end;
+  margin-top: 10px;
+  padding-left: 10px;
+}
+
+.card-info-row span{
+  padding-left: 5px;
+  padding-right: 5px;
+  max-width: 440px;
+}
+
+.card-info-subtitle{
+  display: flex;
+  align-items: flex-end;
+  padding-left: 10px;
+  margin-top: 0px;
+}
+
+.card-info-subtitle span{
+  padding-left: 5px;
+  padding-right: 5px;
+  max-width: 440px;
+}
+
+.card-info-header{
+  display: flex;
+  margin-bottom: 0;
+  padding-left: 10px;
+  padding-right: 20px;
+  padding-top: 20px;
+}
+
+.card-info-header h2{
+  text-decoration: underline;
+  margin-top: 0;
+  margin-bottom: 0;
+  color: #BE983B;
+}
+
+.card-info-header h2:last-child{
+  margin-left: 20px;
+}
+
+.card-legality{
+  text-transform: capitalize;
+}
+
+.keyword{
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 8px;
+}
+
+.bg-blue{
+  background: var(--bg-blue);
+  color: white;
+}
+
+.bg-orange{
+  background: var(--bg-orange);
+  color: white;
+}
+
+.bg-pink{
+  background: var(--bg-pink);
+  color: black;
+}
+
+.bg-yellow{
+  background: var(--bg-yellow);
+  color: black;
+}
+
+.bg-red{
+  background: var(--bg-red);
+  color: white;
+}
+
+.bg-black{
+  background: var(--bg-black);
+  color: white;
+  border: white solid 2px;
+}
