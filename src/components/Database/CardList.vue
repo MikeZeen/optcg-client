@@ -16,13 +16,12 @@
         <option value="100">100</option>
       </select>
     </div>
-    <div :class="['cards-failed', { 'cards': !fetchFailed }]">
+    <div :class="['cards-failed', { 'cards': !fetchFailed}]">
       <div class="failed" v-if="fetchFailed">
         <h1>Failed to find any cards!</h1>
       </div>
-      <CardInfo
+      <CardInfo v-if="!fetchFailed"
         v-for="card in cards"
-        v-if="!fetchFailed"
         :key="card.cardId.toString()"
         :card="card"
       />
@@ -34,6 +33,7 @@
 import { defineComponent, ref, watch, onMounted } from "vue";
 import CardInfo from "./CardInfo.vue";
 import SearchBar from "./Searchbar.vue";
+import {config} from "@/config";
 
 interface Card {
   cardId: string;
@@ -64,19 +64,30 @@ export default defineComponent({
     const currentPage = ref(1);
     const perPage = ref(10);
     const totalPages = ref(1);
+    const isLoading = ref(false);
 
-    const fetchAllCards = async () => {
+    const fetchCards = async (searchTerm?: string) => {
       try {
         fetchFailed.value = false;
-        const url = `https://localhost:7241/cards`;
+        let url = `${config.baseURL}/cards`;
+        if (searchTerm) {
+          url += `/search?CardName=${searchTerm}`;
+        }
         const response = await fetch(url);
         if (!response.ok) {
           throw new Error("Failed to fetch cards");
         }
         const data = await response.json();
-        if (!data) {
-          throw new Error("Empty response");
+        
+        // Log the actual response data for debugging
+        console.log("Response data:", data);
+
+        // Check if the response data includes the 'cards' property
+        if (!data.hasOwnProperty('cards') || !Array.isArray(data.cards)) {
+          throw new Error("Invalid response format: 'cards' property is missing or not an array");
         }
+
+        // Set allCards.value to the array of cards
         allCards.value = data.cards;
         totalPages.value = Math.ceil(allCards.value.length / perPage.value);
         paginateCards();
@@ -85,38 +96,10 @@ export default defineComponent({
         fetchFailed.value = true;
       }
     };
-
     const paginateCards = () => {
       const startIndex = (currentPage.value - 1) * perPage.value;
       const endIndex = startIndex + perPage.value;
       cards.value = allCards.value.slice(startIndex, endIndex);
-    };
-
-    const searchNameCards = async (searchTerm: string) => {
-      try {
-        fetchFailed.value = false;
-        const url = `https://localhost:7241/cards/search?CardName=${searchTerm}`;
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error("Failed to search cards");
-        }
-        const data = await response.json();
-        if (!response) {
-          throw new Error("Empty response");
-        }
-        allCards.value = data.cards;
-        totalPages.value = Math.ceil(allCards.value.length / perPage.value);
-        paginateCards();
-      } catch (error) {
-        console.error('searchNameCards error:', error);
-        fetchFailed.value = true;
-      }
-    };
-
-    const handleSearchUpdate = (searchTerm: string) => {
-      searchNameCards(searchTerm)
-        .then(response => console.log('searchNameCards response:', response))
-        .catch(error => console.error('searchNameCards error:', error));
     };
 
     const prevPage = () => {
@@ -138,7 +121,7 @@ export default defineComponent({
       paginateCards();
     };
 
-    onMounted(fetchAllCards);
+    onMounted(fetchCards);
 
     watch(currentPage, () => {
       paginateCards();
@@ -148,6 +131,10 @@ export default defineComponent({
       changeResultsPerPage();
     });
 
+    const handleSearchUpdate = (searchTerm: string) => {
+      fetchCards(searchTerm);
+    };
+
     return {
       fetchFailed,
       allCards,
@@ -155,8 +142,7 @@ export default defineComponent({
       currentPage,
       perPage,
       totalPages,
-      fetchAllCards,
-      searchNameCards,
+      fetchCards,
       handleSearchUpdate,
       prevPage,
       nextPage,
