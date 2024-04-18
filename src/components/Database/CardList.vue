@@ -32,8 +32,8 @@
 <script lang="ts">
 import { defineComponent, ref, watch, onMounted } from "vue";
 import CardInfo from "./CardInfo.vue";
-import SearchBar from "./Searchbar.vue";
 import {config} from "@/config";
+import SearchBar from "./SearchBar.vue";
 
 interface Card {
   cardId: string;
