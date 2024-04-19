@@ -8,10 +8,14 @@
           Next
         </button>
       </div>
-      <div class="searchbar-wrapper">
-        <CardSearch @updateSearch="handleSearchUpdate" />
-        <v-icon name="gi-hamburger-menu" class="icon-big" scale="2" />
-      </div>
+      <transition name="opacity">
+        <div class="searchbar-wrapper" v-if="!advancedSearch">
+          <CardSearch @updateSearch="handleSearchUpdate" />
+          <a @click="advancedSearch = !advancedSearch"
+            ><v-icon name="gi-hamburger-menu" class="icon-big" scale="2"
+          /></a>
+        </div>
+      </transition>
       <select v-model="perPage" @change="changeResultsPerPage" class="results">
         <option value="10">10</option>
         <option value="25">25</option>
@@ -19,14 +23,15 @@
         <option value="100">100</option>
       </select>
     </div>
-    <div class="adv-search">
-
-    </div>
-    <div :class="['cards-failed', { 'cards': !fetchFailed}]">
+    <transition name="slide">
+      <AdvancedCardSearch v-if="advancedSearch" @toggle-search="advancedSearch = !advancedSearch" />
+    </transition>
+    <div :class="['cards-failed', { cards: !fetchFailed }]">
       <div class="failed" v-if="fetchFailed">
         <h1>Failed to find any cards!</h1>
       </div>
-      <CardInfo v-if="!fetchFailed"
+      <CardInfo
+        v-if="!fetchFailed"
         v-for="card in cards"
         :key="card.cardId.toString()"
         :card="card"
@@ -38,11 +43,11 @@
 <script lang="ts">
 import { defineComponent, ref, watch, onMounted } from "vue";
 import CardInfo from "./CardInfo.vue";
-import {config} from "@/config";
+import { config } from "@/config";
 import CardSearch from "./CardSearch.vue";
-import { GiHamburgerMenu} from "oh-vue-icons/icons";
-import { addIcons } from 'oh-vue-icons';
-
+import AdvancedCardSearch from "./AdvancedCardSearch.vue";
+import { GiHamburgerMenu } from "oh-vue-icons/icons";
+import { addIcons } from "oh-vue-icons";
 
 interface Card {
   cardId: string;
@@ -66,7 +71,8 @@ addIcons(GiHamburgerMenu);
 export default defineComponent({
   components: {
     CardInfo,
-    CardSearch
+    CardSearch,
+    AdvancedCardSearch
   },
   setup() {
     const fetchFailed = ref(false);
@@ -75,7 +81,7 @@ export default defineComponent({
     const currentPage = ref(1);
     const perPage = ref(10);
     const totalPages = ref(1);
-    const isLoading = ref(false);
+    const advancedSearch = ref(false);
 
     const fetchCards = async (searchTerm?: string) => {
       try {
@@ -89,13 +95,15 @@ export default defineComponent({
           throw new Error("Failed to fetch cards");
         }
         const data = await response.json();
-        
+
         // Log the actual response data for debugging
         console.log("Response data:", data);
 
         // Check if the response data includes the 'cards' property
-        if (!data.hasOwnProperty('cards') || !Array.isArray(data.cards)) {
-          throw new Error("Invalid response format: 'cards' property is missing or not an array");
+        if (!data.hasOwnProperty("cards") || !Array.isArray(data.cards)) {
+          throw new Error(
+            "Invalid response format: 'cards' property is missing or not an array"
+          );
         }
 
         // Set allCards.value to the array of cards
@@ -158,6 +166,7 @@ export default defineComponent({
       prevPage,
       nextPage,
       changeResultsPerPage,
+      advancedSearch,
     };
   },
 });

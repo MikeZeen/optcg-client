@@ -176,7 +176,8 @@ ul {
   cursor: pointer;
 }
 
-.pagination button{
+.pagination button,
+.adv-search button{
   color: white;
   background-color: var(--header-color);
   border: none;
@@ -186,18 +187,97 @@ ul {
   height: 3rem;
 }
 
-.pagination button:hover{
+.pagination button:hover,
+.adv-search button:hover{
   opacity: 0.8;
   cursor: pointer;
 }
 
-.pagination button:disabled {
+.pagination button:disabled,
+.adv-search button:disabled{
   cursor: not-allowed;
   opacity: 0.5;
 }
 
-.pagination button:disabled:hover {
+.pagination button:disabled:hover,
+.adv-search button:disabled:hover{
   opacity: 0.4;
+}
+.adv-search-wrapper{
+  width: 100%;
+  text-align: center;
+}
+.adv-search{
+  height: 100%;
+  width: 80%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+}
+
+.adv-search-buttons{
+  display: flex;
+  justify-content: center;
+}
+
+.adv-search input{
+  width: 80%;
+  height: 2rem;
+  margin: 5px;
+}
+
+.adv-search-numberinputs{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+input.numeric{
+  width: 15%;
+}
+
+input.numeric:first-child{
+  margin-left: 60px;
+}
+
+input.numeric:last-child{
+  margin-right: 60px;
+}
+
+.input-description{
+  height: 120px;
+  width: 80%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.slide-enter-active, .slide-leave-active {
+  transition: max-height 0.3s ease-out;
+  overflow: hidden;
+}
+
+.slide-enter-from, .slide-leave-to {
+  max-height: 0;
+}
+
+.slide-enter-to, .slide-leave-from {
+  max-height: 500px;
+}
+
+.opacity-enter-active, .opacity-leave-active {
+  transition: opacity 0.2s ease-out;
+  overflow: hidden;
+}
+
+.opacity-enter-from, .opacity-leave-to {
+  opacity: 0;
+}
+
+.opacity-enter-to, .opacity-leave-from {
+  opacity: 100%;
 }
 
 .card-details{
@@ -260,9 +340,15 @@ ul {
   text-transform: capitalize;
 }
 
+.card-description{
+  line-height: 1.5;
+  letter-spacing: 0.5px;
+  font-weight: normal;
+}
+
 .keyword{
-  padding-top: 3px;
-  padding-bottom: 3px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 6px;
   padding-right: 6px;
   border-radius: 8px;
@@ -297,4 +383,8 @@ ul {
   background: var(--bg-black);
   color: white;
   border: white solid 2px;
+}
+
+strong {
+  white-space: nowrap;
 }
