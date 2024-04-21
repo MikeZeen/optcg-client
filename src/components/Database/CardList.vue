@@ -24,19 +24,29 @@
       </select>
     </div>
     <transition name="slide">
-      <AdvancedCardSearch v-if="advancedSearch" @toggle-search="advancedSearch = !advancedSearch" />
+      <AdvancedCardSearch
+        v-if="advancedSearch"
+        @toggle-search="advancedSearch = !advancedSearch"
+        @advancedSearch="fetchCards"
+      />
     </transition>
-    <div :class="['cards-failed', { cards: !fetchFailed }]">
-      <div class="failed" v-if="fetchFailed">
+    <div v-if="fetchFailed" :class="['cards-failed', { cards: !fetchFailed }]">
+      <div class="failed">
         <h1>Failed to find any cards!</h1>
       </div>
+    </div>
+    <transition-group
+      name="card"
+      tag="div"
+      :class="['cards-failed', { cards: !fetchFailed }]"
+    >
       <CardInfo
         v-if="!fetchFailed"
-        v-for="card in cards"
-        :key="card.cardId.toString()"
+        v-for="(card, index) in cards"
+        :key="card.cardId"
         :card="card"
       />
-    </div>
+    </transition-group>
   </div>
 </template>
 
@@ -72,7 +82,7 @@ export default defineComponent({
   components: {
     CardInfo,
     CardSearch,
-    AdvancedCardSearch
+    AdvancedCardSearch,
   },
   setup() {
     const fetchFailed = ref(false);
@@ -83,13 +93,39 @@ export default defineComponent({
     const totalPages = ref(1);
     const advancedSearch = ref(false);
 
-    const fetchCards = async (searchTerm?: string) => {
+    const fetchCards = async (
+      searchTerm?: string | Record<string, any>,
+      searchParams?: Record<string, any>
+    ) => {
       try {
         fetchFailed.value = false;
         let url = `${config.baseURL}/cards`;
-        if (searchTerm) {
+        let queryParams = [];
+
+        if (typeof searchTerm === "string") {
           url += `/search?CardName=${searchTerm}`;
+        } else if (typeof searchTerm === "object") {
+          url += `/search`;
+          for (const key in searchTerm) {
+            if (searchTerm[key]) {
+              queryParams.push(`${key}=${encodeURIComponent(searchTerm[key])}`);
+            }
+          }
+        } else if (searchParams) {
+          url += `/search`;
+          for (const key in searchParams) {
+            if (searchParams[key]) {
+              queryParams.push(
+                `${key}=${encodeURIComponent(searchParams[key])}`
+              );
+            }
+          }
         }
+
+        if (queryParams.length > 0) {
+          url += `?${queryParams.join("&")}`;
+        }
+
         const response = await fetch(url);
         if (!response.ok) {
           throw new Error("Failed to fetch cards");
@@ -106,10 +142,17 @@ export default defineComponent({
           );
         }
 
-        // Set allCards.value to the array of cards
         allCards.value = data.cards;
         totalPages.value = Math.ceil(allCards.value.length / perPage.value);
-        paginateCards();
+
+        currentPage.value = 1;
+
+        setTimeout(() => {
+          allCards.value = data.cards;
+          totalPages.value = Math.ceil(allCards.value.length / perPage.value);
+          currentPage.value = 1;
+          paginateCards();
+        }, 150);
       } catch (error) {
         console.error(error);
         fetchFailed.value = true;

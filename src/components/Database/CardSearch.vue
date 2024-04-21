@@ -1,7 +1,7 @@
 <template>
   <div>
     <form @submit.prevent="handleSubmit">
-      <input v-model="searchTerm" class="searchbar" type="text" :placeholder="placeholder" @focus="placeholder = ''" @blur="placeholder = 'Search...'" />
+      <input v-model="searchTerm" class="searchbar" type="text" :placeholder="placeholder" @focus="placeholder = ''" @blur="placeholder = 'Search by Name...'" />
     </form>
   </div>
 </template>
@@ -13,7 +13,7 @@ export default defineComponent({
   data() {
     return {
       searchTerm: '',
-      placeholder: 'Search...'
+      placeholder: 'Search by Name...'
     };
   },
   methods: {
