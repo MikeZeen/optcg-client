@@ -49,7 +49,7 @@
         ></textarea>
         <input placeholder="Status" v-model="cardStatus" />
         <div class="adv-search-buttons">
-          <button @click="resetSearch" style="margin-left: auto;">Reset</button>
+          <button @click="resetSearch" style="margin-left: auto;" class="btn-secondary">Reset</button>
           <button @click="advancedSearch">Search</button>
           <a @click="toggleSearch" style="margin-left: auto;"
             ><v-icon name="ai-acclaim" class="icon-big" scale="2"

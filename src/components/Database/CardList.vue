@@ -22,6 +22,8 @@
         <option value="50">50</option>
         <option value="100">100</option>
       </select>
+      <button @click="displayMode = 'full'">Full View</button>
+      <button @click="displayMode = 'image'">Image View</button>
     </div>
     <transition name="slide">
       <AdvancedCardSearch
@@ -39,13 +41,22 @@
       name="card"
       tag="div"
       :class="['cards-failed', { cards: !fetchFailed }]"
+      :data-display-mode="displayMode"
     >
-      <CardInfo
-        v-if="!fetchFailed"
-        v-for="(card, index) in cards"
-        :key="card.cardId"
-        :card="card"
-      />
+
+    <CardInfo
+      v-if="!fetchFailed && displayMode === 'full'"
+      v-for="(card, index) in cards"
+      :key="card.cardId"
+      :card="card"
+    />
+
+    <CardImage
+      v-if="!fetchFailed && displayMode === 'image'"
+      v-for="(card, index) in cards"
+      :key="card.cardId"
+      :card="card"
+    />
     </transition-group>
   </div>
 </template>
@@ -53,6 +64,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch, onMounted } from "vue";
 import CardInfo from "./CardInfo.vue";
+import CardImage from "./CardImage.vue";
 import { config } from "@/config";
 import CardSearch from "./CardSearch.vue";
 import AdvancedCardSearch from "./AdvancedCardSearch.vue";
@@ -81,17 +93,20 @@ addIcons(GiHamburgerMenu);
 export default defineComponent({
   components: {
     CardInfo,
+    CardImage,
     CardSearch,
     AdvancedCardSearch,
   },
   setup() {
-    const fetchFailed = ref(false);
-    const allCards = ref<Card[]>([]);
-    const cards = ref<Card[]>([]);
-    const currentPage = ref(1);
-    const perPage = ref(10);
-    const totalPages = ref(1);
-    const advancedSearch = ref(false);
+    const savedSettings = JSON.parse(localStorage.getItem('cardSettings') || '{}');
+    const fetchFailed = ref(savedSettings.fetchFailed !== undefined ? savedSettings.fetchFailed : false);
+    const allCards = ref(savedSettings.allCards || []);
+    const cards = ref(savedSettings.cards || []);
+    const currentPage = ref(savedSettings.currentPage !== undefined ? savedSettings.currentPage : 1);
+    const perPage = ref(savedSettings.perPage !== undefined ? savedSettings.perPage : 10);
+    const totalPages = ref(savedSettings.totalPages !== undefined ? savedSettings.totalPages : 1);
+    const advancedSearch = ref(savedSettings.advancedSearch !== undefined ? savedSettings.advancedSearch : false);
+    const displayMode = ref(savedSettings.displayMode || 'full');
 
     const fetchCards = async (
       searchTerm?: string | Record<string, any>,
@@ -193,6 +208,20 @@ export default defineComponent({
       changeResultsPerPage();
     });
 
+    watch([fetchFailed, allCards, cards, currentPage, perPage, totalPages, advancedSearch, displayMode], () => {
+      const settingsToSave = {
+        fetchFailed: fetchFailed.value,
+        allCards: allCards.value,
+        cards: cards.value,
+        currentPage: currentPage.value,
+        perPage: perPage.value,
+        totalPages: totalPages.value,
+        advancedSearch: advancedSearch.value,
+        displayMode: displayMode.value
+      };
+      localStorage.setItem('cardSettings', JSON.stringify(settingsToSave));
+    }, { deep: true });
+
     const handleSearchUpdate = (searchTerm: string) => {
       fetchCards(searchTerm);
     };
@@ -210,6 +239,7 @@ export default defineComponent({
       nextPage,
       changeResultsPerPage,
       advancedSearch,
+      displayMode,
     };
   },
 });

@@ -113,15 +113,23 @@ ul {
 .cards {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr); /* Default: 2 columns */
   gap: 20px;
   padding: 1rem;
   text-align: left;
+  justify-content: space-around;
 }
 
 @media screen and (max-width: 600px) {
   .cards {
     grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .cards[data-display-mode="image"] {
+    grid-template-columns: repeat(4, 1fr);
+    margin-left: 20px;
   }
 }
 
@@ -257,6 +265,7 @@ ul {
 
 input.numeric{
   width: 15%;
+  text-align: center;
 }
 
 input.numeric:first-child{
@@ -265,6 +274,13 @@ input.numeric:first-child{
 
 input.numeric:last-child{
   margin-right: 60px;
+}
+
+button.btn-secondary{
+  background: var(--dark-gray);
+  border: 2px solid var(--header-color);
+  justify-items: center;
+  color: var(--header-color)
 }
 
 .input-description{
