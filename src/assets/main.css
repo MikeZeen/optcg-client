@@ -117,7 +117,6 @@ ul {
   gap: 20px;
   padding: 1rem;
   text-align: left;
-  justify-content: space-around;
 }
 
 @media screen and (max-width: 600px) {
@@ -129,7 +128,7 @@ ul {
 @media screen and (min-width: 800px) {
   .cards[data-display-mode="image"] {
     grid-template-columns: repeat(4, 1fr);
-    margin-left: 20px;
+    gap: 20px;
   }
 }
 

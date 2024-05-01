@@ -1,6 +1,6 @@
 <template>
     <div class="card-wrapper">
-      <img :src="imageUrl" @load="handleImageLoad" class="card-image"/>
+      <img :src="imageUrl ? imageUrl : ''" @load="handleImageLoad" class="card-image"/>
     </div>
   </template>
   

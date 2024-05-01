@@ -1,3 +1,3 @@
 export const config = {
-    baseURL: 'https://localhost:7241'
+    baseURL: 'http://185.219.84.236:5000'
   };

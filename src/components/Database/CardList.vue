@@ -158,24 +158,18 @@ export default defineComponent({
         }
 
         allCards.value = data.cards;
-        totalPages.value = Math.ceil(allCards.value.length / perPage.value);
-
-        currentPage.value = 1;
-
-        setTimeout(() => {
-          allCards.value = data.cards;
-          totalPages.value = Math.ceil(allCards.value.length / perPage.value);
-          currentPage.value = 1;
-          paginateCards();
-        }, 150);
+        totalPages.value = Math.ceil(allCards.value.length / perPage.value) || 1; // Update totalPages when allCards or perPage changes
+        currentPage.value = 1; // Reset currentPage
+        paginateCards(); // Paginate cards with updated values
       } catch (error) {
         console.error(error);
         fetchFailed.value = true;
       }
     };
+
     const paginateCards = () => {
       const startIndex = (currentPage.value - 1) * perPage.value;
-      const endIndex = startIndex + perPage.value;
+      const endIndex = Math.min(startIndex + perPage.value, allCards.value.length);
       cards.value = allCards.value.slice(startIndex, endIndex);
     };
 
