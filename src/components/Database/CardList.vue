@@ -199,6 +199,7 @@ export default defineComponent({
     });
 
     watch(perPage, () => {
+      currentPage.value = 1;
       changeResultsPerPage();
     });
 
