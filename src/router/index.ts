@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import DatabaseView from '../views/DatabaseView.vue'
+import CardView from '../views/CardView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,6 +10,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView
+    },
+    {
+      path: '/db/card/:cardId',
+      name: 'card',
+      component: CardView
     },
     {
       path: '/db',

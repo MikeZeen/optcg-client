@@ -1,12 +1,13 @@
 <template>
   <div class="card-wrapper">
     <div class="card-details">
-      <img :src="imageUrl!" @load="handleImageLoad" class="card-image"/>
+      <img :src="imageUrl!" @load="handleImageLoad" class="card-image" />
       <div>
-        <div class="card-info-header">
-          <h2>{{ card.cardName }}<span>  </span></h2>
-          <h2 style="text-decoration: none;">{{ card.cardId }}</h2>
-        </div>
+        <router-link :to="`/db/card/${card.cardId}`">
+          <div class="card-info-header">
+            <h2>{{ card.cardName }}<span> </span></h2>
+            <h2 style="text-decoration: none">{{ card.cardId }}</h2>
+          </div></router-link>
         <div class="card-info-subtitle">
           <span class="card-color">{{ card.cardColor }}</span>
           <span class="card-category">{{ card.cardCategory }}</span>
@@ -15,17 +16,17 @@
           <span class="card-life" v-if="card.cardLife !== '0'">
             <v-icon name="bi-heart-fill" class="icon" scale="1.2" />
             {{ card.cardLife }}
-            </span>
+          </span>
           <span class="card-cost" v-if="card.cardCost !== '0'">
-            <v-icon name="gi-two-coins" class="icon" scale="1.2"/>
+            <v-icon name="gi-two-coins" class="icon" scale="1.2" />
             {{ card.cardCost }}
           </span>
           <span class="card-power" v-if="card.cardCategory !== 'Event'">
-            <v-icon name="gi-pointy-sword" class="icon" scale="1.2"/>
+            <v-icon name="gi-pointy-sword" class="icon" scale="1.2" />
             {{ card.cardPower }}
           </span>
           <span class="card-blocker" v-if="card.cardBlocker !== '0'">
-            <v-icon name="bi-lightning-charge-fill" class="icon" scale="1.2"/>
+            <v-icon name="bi-lightning-charge-fill" class="icon" scale="1.2" />
             +{{ card.cardBlocker }}
           </span>
         </div>
@@ -35,16 +36,18 @@
           </span>
         </div>
         <div class="card-info-row" v-if="card.cardDescription !== ''">
-          <span class="card-description" ><strong>Description:</strong> <br />
-          <div v-html="highlightedDescription"></div>
+          <span class="card-description"
+            ><strong>Description:</strong> <br />
+            <div v-html="highlightedDescription"></div>
           </span>
         </div>
         <div class="card-info-row">
           <span class="card-types">
-            <strong>Type:</strong> {{ card.cardType.replace(", ", "/") }}</span>
+            <strong>Type:</strong> {{ card.cardType.replace(", ", "/") }}</span
+          >
         </div>
         <div class="card-info-row">
-            <span class="card-legality">{{ card.cardStatus.toLowerCase() }}</span>
+          <span class="card-legality">{{ card.cardStatus.toLowerCase() }}</span>
         </div>
       </div>
     </div>
@@ -52,16 +55,13 @@
 </template>
 
 <script lang="ts">
-import { addIcons } from 'oh-vue-icons';
+import { addIcons } from "oh-vue-icons";
 import { BiHeartFill, BiLightningChargeFill } from "oh-vue-icons/icons";
-import { GiTwoCoins, GiPointySword} from "oh-vue-icons/icons";
+import { GiTwoCoins, GiPointySword } from "oh-vue-icons/icons";
 
 import { defineComponent } from "vue";
 
-addIcons( GiPointySword, 
-          GiTwoCoins, 
-          BiHeartFill, 
-          BiLightningChargeFill)
+addIcons(GiPointySword, GiTwoCoins, BiHeartFill, BiLightningChargeFill);
 
 export default defineComponent({
   props: {
@@ -88,60 +88,81 @@ export default defineComponent({
   data() {
     return {
       imageUrl: null as string | null,
-      effects: ["\\[On Play\\]", "\\[Activate: Main\\]", 
-                "\\[On K.O.\\]", "\\[Your Turn\\]", 
-                "\\[Opponent's Turn\\]", "\\[When Attacking\\]",
-                "\\[Main\\]", "\\[On Block\\]", "\\[End of your Turn\\]",
-                "\\[End of Opponent's Turn\\]", "\\[On Your Opponent's Attack\\]"],
-      keywords: ["\\[Blocker\\]", "\\[Rush\\]", "\\[Double Attack\\]", "\\[Banish\\]"],
-      trigger : ["\\[Trigger\\]"],
-      restriction : ["\\[Once Per Turn\\]"],
-      donNumber : 0,
-      donX : [`\\[DON!!x${this.donNumber}\\]`],
-      donMinus : [`\\[DON!!-${this.donNumber}\\]`],
+      effects: [
+        "\\[On Play\\]",
+        "\\[Activate: Main\\]",
+        "\\[On K.O.\\]",
+        "\\[Your Turn\\]",
+        "\\[Opponent's Turn\\]",
+        "\\[When Attacking\\]",
+        "\\[Main\\]",
+        "\\[On Block\\]",
+        "\\[End of your Turn\\]",
+        "\\[End of Opponent's Turn\\]",
+        "\\[On Your Opponent's Attack\\]",
+      ],
+      keywords: [
+        "\\[Blocker\\]",
+        "\\[Rush\\]",
+        "\\[Double Attack\\]",
+        "\\[Banish\\]",
+      ],
+      trigger: ["\\[Trigger\\]"],
+      restriction: ["\\[Once Per Turn\\]"],
+      donNumber: 0,
+      donX: [`\\[DON!!x${this.donNumber}\\]`],
+      donMinus: [`\\[DON!!-${this.donNumber}\\]`],
       counter: ["\\[Counter\\]"],
-
     };
   },
   computed: {
-    formattedDescription(){
+    formattedDescription() {
       return this.card.cardDescription;
     },
     highlightedDescription() {
       let description = this.formattedDescription;
-      [...this.effects, ...this.keywords, ...this
-      .trigger, ...this.restriction, ...this.counter].map(effect => {
-        const regex = new RegExp(`(${effect})([^\\[]*)`, 'g');
-        description = description.replace(regex, (match, p1, p2, offset, string) => {
-          const effectWithoutBrackets = p1.replace(/\\?\[/g, '').replace(/\\?\]/g, '');
-          let className;
-          if (this.effects.includes(effect)) {
-            className = 'bg-blue keyword';
-          } else if (this.keywords.includes(effect)) {
-            className = 'bg-orange keyword';
-          } else if (this.trigger.includes(effect)) {
-            className = 'bg-yellow keyword';
-          } else if (this.restriction.includes(effect)) {
-            className = 'bg-pink keyword';
+      [
+        ...this.effects,
+        ...this.keywords,
+        ...this.trigger,
+        ...this.restriction,
+        ...this.counter,
+      ].map((effect) => {
+        const regex = new RegExp(`(${effect})([^\\[]*)`, "g");
+        description = description.replace(
+          regex,
+          (match, p1, p2, offset, string) => {
+            const effectWithoutBrackets = p1
+              .replace(/\\?\[/g, "")
+              .replace(/\\?\]/g, "");
+            let className;
+            if (this.effects.includes(effect)) {
+              className = "bg-blue keyword";
+            } else if (this.keywords.includes(effect)) {
+              className = "bg-orange keyword";
+            } else if (this.trigger.includes(effect)) {
+              className = "bg-yellow keyword";
+            } else if (this.restriction.includes(effect)) {
+              className = "bg-pink keyword";
+            } else if (this.counter.includes(effect)) {
+              className = "bg-red keyword";
+            }
+            return `<strong class="${className}">${effectWithoutBrackets}</strong>${p2}`;
           }
-          else if(this.counter.includes(effect)){
-            className='bg-red keyword'
-          }
-          return `<strong class="${className}">${effectWithoutBrackets}</strong>${p2}`;
-        });
+        );
       });
 
       if (/\[DON!! x\d+\]|DON!! −\d+/.test(description)) {
         const donRegex = /\[DON!! x\d+\]|DON!! −\d+/g;
         description = description.replace(donRegex, (match) => {
           // Remove brackets from the matched string
-          const matchWithoutBrackets = match.replace(/[\[\]]/g, '');
+          const matchWithoutBrackets = match.replace(/[\[\]]/g, "");
           return `<strong class="bg-black keyword">${matchWithoutBrackets}</strong>`;
         });
       }
 
       return description;
-    }
+    },
   },
   methods: {
     async getImage(cardId: string, cardImages: string) {
@@ -160,6 +181,9 @@ export default defineComponent({
         return null;
       }
     },
+    openCardInfo(cardId: string) {
+      this.$router.push({ path: `/db/card/${cardId}` });
+    },
     handleImageLoad() {
       this.$forceUpdate();
     },
@@ -169,5 +193,14 @@ export default defineComponent({
   },
 });
 </script>
+router-link{
+  text-decoration: none;
+  margin: none;
+  padding: none;
+}
+
+a{
+  text-decoration: none;
+}
 
 <style scoped></style>

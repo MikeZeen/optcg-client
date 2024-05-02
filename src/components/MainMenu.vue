@@ -2,7 +2,7 @@
   <div>
     <ul class="menu-list">
       <img src="/Logo.png" class="logo"/>
-      <router-link to="/" tag="li" class="menu-item"><a>Home</a></router-link>
+      <router-link to="/" tag="li" class="menu-item"><a>News</a></router-link>
       <router-link to="/db" tag="li" class="menu-item"><a>Database</a></router-link>
     </ul>
   </div>
